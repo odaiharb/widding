@@ -1,0 +1,92 @@
+/* ============================================================
+   ENVELOPE — opening screen. Shows the invitation-card video's
+   first frame; a tap plays the video (wax seal, crest, reveal
+   all happen inside that clip); when it ends, the real
+   invitation fades in beneath it.
+   ============================================================ */
+
+#envelope {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0e0a07;
+  transition: opacity var(--dur-slow) var(--ease-luxury), visibility var(--dur-slow);
+}
+
+#envelope.envelope-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.envelope-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Tap-to-begin layer — sits over the paused first frame, fades
+   away the moment the visitor taps and the clip starts playing. */
+.envelope-tap-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: calc(var(--space-xl) + var(--safe-bottom));
+  background: linear-gradient(180deg, rgba(10,7,5,0.05) 0%, rgba(10,7,5,0) 40%, rgba(10,7,5,0.55) 100%);
+  cursor: pointer;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.envelope-tap-layer.is-playing {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.envelope-tap-inner {
+  text-align: center;
+}
+
+.tap-hint {
+  font-family: var(--font-arabic-body);
+  font-size: clamp(1rem, 4vw, 1.2rem);
+  letter-spacing: 0.02em;
+  color: var(--c-warm-white);
+  opacity: 0.92;
+  animation: hintPulse 2.6s ease-in-out infinite;
+}
+
+@keyframes hintPulse {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+
+.envelope-light-burst {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: radial-gradient(circle at 50% 45%, rgba(255,250,235,0.95), rgba(255,250,235,0) 65%);
+  opacity: 0;
+  pointer-events: none;
+}
+#envelope.flash .envelope-light-burst {
+  animation: lightBurst 1s var(--ease-luxury) forwards;
+}
+@keyframes lightBurst {
+  0% { opacity: 0; }
+  50% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@media (min-width: 900px) {
+  .envelope-video { max-width: 560px; left: 50%; transform: translateX(-50%); width: 560px; }
+  #envelope { background: #0e0a07; }
+}
